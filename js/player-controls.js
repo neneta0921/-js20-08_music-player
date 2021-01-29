@@ -6,12 +6,8 @@ let songIndex = 0;
 
 class PlayerControls {
   constructor() {
-    this.image = document.querySelector('img');
     this.title = document.querySelector('#title');
-    this.artist = document.querySelector('#artist');
-    this.prevBtn = document.querySelector('#prev');
     this.playBtn = document.querySelector('#play');
-    this.nextBtn = document.querySelector('#next');
     this.init();
   }
 
@@ -57,21 +53,27 @@ class PlayerControls {
 
   // Update Dom
   loadSong(song) {
+    const artist = document.querySelector('#artist');
+    const image = document.querySelector('img');
+
     this.title.textContent = song.displayName;
-    this.artist.textContent = song.artist;
+    artist.textContent = song.artist;
     music.src = `music/${song.name}.mp3`;
-    this.image.src = `img/${song.name}.jpg`;
+    image.src = `img/${song.name}.jpg`;
   }
 
   _addEvent() {
+    const prevBtn = document.querySelector('#prev');
+    const nextBtn = document.querySelector('#next');
+
     // Play or Pause Event Listener
     this.playBtn.addEventListener('click', () =>
       isPlaying ? this._pauseSong() : this._playSong()
     );
 
     // Event Listeners
-    this.prevBtn.addEventListener('click', () => this._prevSong());
-    this.nextBtn.addEventListener('click', () => this._nextSong());
+    prevBtn.addEventListener('click', () => this._prevSong());
+    nextBtn.addEventListener('click', () => this._nextSong());
     music.addEventListener('ended', () => this._nextSong());
   }
 }

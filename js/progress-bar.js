@@ -1,8 +1,6 @@
 class ProgressBar {
   constructor() {
     this.progress = document.querySelector('#progress');
-    this.currentTimeEl = document.querySelector('#current-time');
-    this.durationEl = document.querySelector('#duration');
     this.progressContainer = document.querySelector('#progress-container');
     this._init();
   }
@@ -19,6 +17,7 @@ class ProgressBar {
 
   _displayDuration(duration) {
     // Calculate display for duration
+    const durationEl = document.querySelector('#duration');
     const durationMinutes = Math.floor(duration / 60);
     let durationSeconds = Math.floor(duration % 60);
     if (durationSeconds < 10) {
@@ -26,18 +25,20 @@ class ProgressBar {
     }
     // Delay switching duration Element to avoid NaN
     if (durationSeconds) {
-      this.durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+      durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
     }
   }
 
   _displayCurrentTime(currentTime) {
+    const currentTimeEl = document.querySelector('#current-time');
+
     // Calculate display for current
     const currentMinutes = Math.floor(currentTime / 60);
     let currentSeconds = Math.floor(currentTime % 60);
     if (currentSeconds < 10) {
       currentSeconds = `0${currentSeconds}`;
     }
-    this.currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
   }
 
   // Get Current Position

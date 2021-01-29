@@ -1,71 +1,22 @@
-const image = document.querySelector('img');
-const title = document.querySelector('#title');
-const artist = document.querySelector('#artist');
-const music = document.querySelector('audio');
-const prevBtn = document.querySelector('#prev');
-const playBtn = document.querySelector('#play');
-const nextBtn = document.querySelector('#next');
+document.addEventListener('DOMContentLoaded', () => {
+  new Main();
+});
 
-const progressBar = new ProgressBar();
-
-// Check if Playing
-let isPlaying = false;
-
-// Play
-function playSong() {
-  isPlaying = true;
-  playBtn.classList.replace('fa-play', 'fa-pause');
-  playBtn.setAttribute('title', 'Pause');
-  music.play();
-}
-
-// Pause
-function pauseSong() {
-  isPlaying = false;
-  playBtn.classList.replace('fa-pause', 'fa-play');
-  playBtn.setAttribute('title', 'Play');
-  music.pause();
-}
-
-// Play or Pause Event Listener
-playBtn.addEventListener('click', () => (isPlaying ? pauseSong() : playSong()));
-
-// Current Song
-let songIndex = 0;
-
-// Previous Song
-function prevSong() {
-  songIndex--;
-  if (songIndex < 0) {
-    songIndex = songs.length - 1;
+class Main {
+  constructor() {
+    this._init();
   }
-  loadSong(songs[songIndex]);
-  playSong();
-}
 
-// Next Song
-function nextSong() {
-  songIndex++;
-  if (songIndex > songs.length - 1) {
-    songIndex = 0;
+  _init() {
+    this.playerControls = new PlayerControls();
+    this.progressBar = new ProgressBar();
+    this._addEvent();
+
+    // On Load - Select First Song
+    this.playerControls.loadSong(songs[songIndex]);
   }
-  loadSong(songs[songIndex]);
-  playSong();
+
+  _addEvent() {
+    music.addEventListener('timeupdate', (event) => this.progressBar.updateProgressBar(event));
+  }
 }
-
-// Update Dom
-function loadSong(song) {
-  title.textContent = song.displayName;
-  artist.textContent = song.artist;
-  music.src = `music/${song.name}.mp3`;
-  image.src = `img/${song.name}.jpg`;
-}
-
-// On Load - Select First Song
-loadSong(songs[songIndex]);
-
-// Event Listeners
-prevBtn.addEventListener('click', prevSong);
-nextBtn.addEventListener('click', nextSong);
-music.addEventListener('ended', nextSong);
-music.addEventListener('timeupdate', (event) => progressBar.updateProgressBar(event));
